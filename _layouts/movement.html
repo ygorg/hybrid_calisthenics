@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+<style>
+.progression {
+	height: 200px;
+	margin: 10px;
+	padding: 10px;
+	background-size: contain;
+	background-position: center;
+}
+</style>
+
+{% for p in page.progression %}
+
+<div class="progression" style="background-image: url({{p.thumbnail}});">
+	<span>{{p.name}}</span>
+</div>
+
+{% endfor %}
