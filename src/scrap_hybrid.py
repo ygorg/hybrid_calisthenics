@@ -1,4 +1,7 @@
+# scrapy shell -s HTTPCACHE_ENABLED=true
+
 import json
+import yaml
 import traceback
 
 from bs4 import BeautifulSoup
@@ -32,24 +35,27 @@ def yaml_export(path, movement):
     with open(path, 'w') as f:
         f.write('---\n')
         f.write('layout: movement\n')
-        yaml.dump(data[mvt_n], f)
+        yaml.dump(movement, f)
         f.write('---\n')
 
 
 def parse_overview(response):
     mvt = {'overview': {}}
-    for i, prog in enumerate(response.css('figure')):
-        item = {}
-        item['order'] = i + 1
-        item['name'] = (prog.css('h3::text').get() or prog.css('h2::text').get()).split('-', 1)[-1].strip()
-        item['thumbnail'] = prog.css('img::attr(src)').get()
-        item['short_desc'] = prog.css('p::text').getall()[:-1] 
-        mvt[item['name']] = item
     content = response.css('.content')[0]
     mvt['overview']['name'] = content.xpath('.//h1/text()').get() or content.xpath('.//h2/text()').get()
+    mvt['overview']['name'] = mvt['overview']['name'].replace(' Progression', '')
     mvt['overview']['desc'] = content.xpath('.//p/text()').get()
     mvt['overview']['video'] = content.xpath('.//a/@href').get()
     mvt['overview']['background'] = response.css('.section-background img::attr(src)').get()
+
+    for i, prog in enumerate(response.css('figure')):
+        item = {}
+        item['order'] = i + 1
+        # item['name'] = (prog.css('h3::text').get() or prog.css('h2::text').get()).split('-', 1)[-1].strip()
+        item['thumbnail'] = prog.css('img::attr(src)').get()
+        item['short_desc'] = prog.css('p::text').getall()[:-1] 
+        item['url'] = prog.css('a::attr(href)').get()
+        mvt[item['url']] = item
     return mvt
 
 def parse_progression(response):
@@ -70,6 +76,7 @@ for mvt_n in sorted(list(mvt_urls)):
     #    continue
 
     progs = mvt_urls[mvt_n]
+    mvt_idx = progs[0][1:]
     fetch(url_base + progs[0])
     try:
         mvt = parse_overview(response)
@@ -80,15 +87,17 @@ for mvt_n in sorted(list(mvt_urls)):
         print()
 
     for i, prog_u in enumerate(progs[1:]):
+        prog_idx = prog_u[1:]
         fetch(url_base + prog_u)
         try:
             item = parse_progression(response)
             item['order'] = i + 1
+            item['url'] = prog_u
 
             if item['name'] not in mvt:
-                mvt[item['name']] = item
+                mvt[prog_idx] = item
             else:
-                mvt[item['name']].update(item)
+                mvt[prog_idx].update(item)
         except Exception as e:
             print(f'\n\n--> Pbm in {mvt_n} - {prog_u}\n')
             print(traceback.format_exc())
@@ -97,12 +106,12 @@ for mvt_n in sorted(list(mvt_urls)):
     if not mvt:
         continue
     if 'overview' in mvt:
-        data[mvt_n] = mvt.pop('overview')
+        data[mvt_idx] = mvt.pop('overview')
     else:
-        data[mvt_n] = {}    
-    data[mvt_n]['progression'] = sorted(mvt.values(), key=lambda x: x['order'])
+        data[mvt_idx] = {}    
+    data[mvt_idx]['progression'] = sorted(mvt.values(), key=lambda x: x['order'])
     
-    yaml_export(f'_movement/{mvt_n.lower()}.md', data[mvt_n])
+    yaml_export(f'_movement/{mvt_idx.lower()}.md', data[mvt_idx])
 
 with open('data.json', 'w') as f:
     json.dump(data, f)

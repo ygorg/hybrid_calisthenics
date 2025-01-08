@@ -37,6 +37,8 @@ plugins:
 collections:
   movement:
     output: true
+  progression:
+    output: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -46,7 +48,8 @@ collections:
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
-# exclude:
+exclude:
+  - src
 #   - .sass-cache/
 #   - .jekyll-cache/
 #   - gemfiles/

@@ -2,20 +2,79 @@
 layout: default
 ---
 
+<link rel="stylesheet" type="text/css" href="../assets/progression_card.css">
+
 <style>
-.progression {
-	height: 200px;
-	margin: 10px;
-	padding: 10px;
-	background-size: contain;
-	background-position: center;
+.preview-panel {
+    padding: 0.5em;
+    box-sizing: border-box;
+
+    .preview-content{
+        padding-top: 30%;
+    }
+
+    .mvt_name {
+        color: white;
+        display: block;
+    }
+    .mvt_count {
+        color: lightgreen;
+    }
+
+    a{
+        color: #111;
+    }
 }
 </style>
 
-{% for p in page.progression %}
-
-<div class="progression" style="background-image: url({{p.thumbnail}});">
-	<span>{{p.name}}</span>
+<div class="preview-panel" style="background: linear-gradient(0deg, rgb(0, 0, 0, 0.6) 0%, rgb(0, 0, 0, 0.5) 30%, transparent 50%), url('{{page.background}}') center; background-size: cover;">
+    <div class="preview-content">
+        <h1 class="mvt_name">{{page.name}} Progressions</h1>
+        <span class="mvt_count"><a href="{{page.video}}">Watch Video</a></span>
+    </div>
 </div>
 
+<h4>Progressions</h4>
+
+{{page.desc}}
+
+{% assign prog = site.progression | where: "mvt_idx", page.mvt_idx | sort:"prg_pos" %}
+
+<div class="progression-container">
+
+{% for p in prog %}
+
+{% include progression_card.html %}
+
 {% endfor %}
+</div>
+
+<script type="text/javascript">
+function update_history(prg_idx, set) {
+	let history = JSON.parse(localStorage.getItem('history'));
+	if (!history) {
+		history = {};
+	}
+	if (!history[prg_idx]) {
+		history[prg_idx] = [];
+	}
+	history[prg_idx].push({"date": new Date().toISOString(), "set": set});
+	localStorage.setItem("history", JSON.stringify(history));
+}
+
+function logset(e) {
+	let set = [...e.target.parentElement.getElementsByTagName('input')].map(
+		(e) => parseInt(e.value, 10)
+	);
+	const prg_idx = e.target.parentElement.parentElement.id;
+	update_history(prg_idx, set);
+}
+
+function main() {
+	[...document.getElementsByTagName('button')].forEach(
+		(e) => e.addEventListener('click', logset)
+	);
+}
+
+document.body.onload = main
+</script>

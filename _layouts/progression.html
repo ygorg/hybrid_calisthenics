@@ -1,0 +1,57 @@
+---
+layout: default
+---
+
+<style>
+.preview-panel {
+    padding: 0.5em;
+    box-sizing: border-box;
+
+    .preview-content{
+        padding-top: 30%;
+    }
+
+    .mvt_name {
+        color: white;
+        display: block;
+    }
+    .mvt_count {
+        color: lightgreen;
+    }
+
+    a{
+        color: #111;
+    }
+}
+</style>
+
+<div class="preview-panel" style="background: linear-gradient(0deg, rgb(0, 0, 0, 0.6) 0%, rgb(0, 0, 0, 0.5) 30%, transparent 50%), url('{{page.thumbnail}}') center; background-size: cover;">
+    <div class="preview-content">
+        <h1 class="mvt_name">{{page.name}} Progressions</h1>
+        <span class="mvt_count"><a href="{{page.video}}">Watch Video</a></span>
+    </div>
+</div>
+
+{% assign mvt = site.movement | find:"mvt_idx",page.mvt_idx %}
+
+<span>{{mvt.name}} Progression {{page.prg_pos}}</span>
+<h1>{{page.name}}</h1>
+
+<h3>Overview</h3>
+
+{{page.desc}}
+
+<h3>Levels</h3>
+{{page.levels}}
+
+<h3>Tutorial</h3>
+{{page.tutorial}}
+
+<h3>Form Cues</h3>
+{{page.form}}
+
+<h3>Progression / Regression</h3>
+{{page.prog_reg}}
+
+
+

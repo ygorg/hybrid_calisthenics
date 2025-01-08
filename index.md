@@ -1,69 +1,50 @@
 ---
-title: Library
+title: Home
 layout: default
 ---
 
-<!-- From https://github.com/midzer/urban-theme/blob/master/_includes/preview.html -->
+<link rel="stylesheet" type="text/css" href="assets/progression_card.css">
 
 <style>
-.preview-panel {
-    padding: 0.5em;
-    box-sizing: border-box;
-    border: 1px solid transparent;
-
-    a{
-        color: #111;
-    }
-    
-    &:hover {
-        border: 1px solid #e8e8e8;
-    }
-}
-
-/* From https://vidler.app/blog/website-design/how-to-create-a-responsive-square-image-with-css/ */
-.img-container {
-  position: relative;
-}
-
-.img-container::after {
-  content: "";
-  display: block;
-  padding-bottom: 100%;
-}
-
-.img-container img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
-}
-
-
-/* Grid */
-
-.grid-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 10px;
-  margin: 0 auto;
-}
-
-@media screen and (max-width: 600px) {
-    .grid-wrapper {
-        grid-template-columns: 1fr 1fr;
-    }
+.streak-week .streak-day {
+	background-color: pink;
+	border-radius: 100%;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	margin: 3px;
+	float: left;
 }
 </style>
 
-<div class="grid-wrapper">
-{% for post in site.movement -%}
-    <div class="preview-panel">
-        <a href="{{ post.url | prepend: site.baseurl }}">
-                <div class="img-container">
-                    <img alt="{{post.name}}" src="{{post.background}}">
-                </div>
-        </a>
-   </div>
-{% endfor %}
+<h1>Greetings, friend</h1>
+
+<span>Hey friend it looks like you have a streak going, keep it up!</span>
+
+<div class="streak-container">
+	<div class="streak-week">
+	{% for num in (1...7) %}
+		<div class="streak-day">{{num}}</div>
+	{% endfor %}
+	</div>
+	<div>
+		<p>
+			<span>5</span>
+			<span>Day Activity Streak</span>
+		</p>
+		<p>
+			<span>22</span>
+			<span>Total Workouts</span>
+		</p>
+	</div>
+</div>
+
+<h2>Start Your New Routine</h2>
+
+<div>
+	<h2>January 8th</h2>
+	{% assign p = site.progression[0] %}
+	{% include progression_card.html %}
+	{% assign p = site.progression[3] %}
+	{% include progression_card.html %}
 </div>

@@ -1,0 +1,33 @@
+<figure id="{{p.prg_idx}}" class="progression-card">
+	
+	<img src="{{p.thumbnail}}">
+	<figcaption>
+		<a href="{{p.url}}">
+		<span class="prg_pos">Progression {{p.prg_pos}}</span>
+		<span class="prg_name">{{p.name}}</span>
+		<span class="prg_level">
+			<svg width="12px" height="12px" viewBox="0 0 24 24" stroke="black" stroke-width="2" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<circle cx="12" cy="12" r="9"/>
+			</svg>
+		 Level 1</span>
+		</a>
+	</figcaption>
+
+	<div class="logsets">
+	<div>
+	<label for="{{p.prg_idx}}-set1">Set 1</label>
+	<input type="number" id="{{p.prg_idx}}-set1" name="{{p.prg_idx}}-set1" min="0" value="10"/>
+	</div>
+
+	<div>
+	<label for="{{p.prg_idx}}-set2">Set 2</label>
+	<input type="number" id="{{p.prg_idx}}-set2" name="{{p.prg_idx}}-set2" min="0" value="10"/>
+	</div>
+	<div>
+	<label for="{{p.prg_idx}}-set3">Set 3</label>
+	<input type="number" id="{{p.prg_idx}}-set3" name="{{p.prg_idx}}-set3" min="0" value="10"/>
+	</div>
+	<button onclick="logset">Log sets</button>
+
+</div>
+</figure>

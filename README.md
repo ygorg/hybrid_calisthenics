@@ -34,15 +34,17 @@ Routine
 
 ## Todo
 
-- Add urls in scraper (to have a unique ID per progression) and unify overview and progression info.
-- Refactor collection at progression level instead of movement. (add a movement attribute).
-- Create "Movement Library" page
-- Create "Movement" layout
-- Think about how to log sets (add 3 text box next to progression in movement and progression)
-- Create "Progression" layout
-- Map video urls from `shinosteph/calisthenics-routine`
+[x] Add urls in scraper (to have a unique ID per progression) and unify overview and progression info.
+[x] Refactor collection at progression level instead of movement. (add a movement attribute).
+[x] Create "Movement Library" page
+[x] Create "Movement" layout
+[x] Think about how to log sets (add 3 text box next to progression in movement and progression)
+[x] Create "Progression" layout
+[ ] Display the next level to attain (given the history)
+[ ] Map video urls from `shinosteph/calisthenics-routine`
 
 
+[ ] Generer automatiquement la routine du jour
 - For each movement display next target
 - Think about how to display history (per movement, per progression, dedicated tab)
 - Import / Export history
