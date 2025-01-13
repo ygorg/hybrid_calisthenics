@@ -63,11 +63,11 @@ def parse_progression(response):
     item['name'] = (response.css('h2::text').get() or response.css('h3::text').get())
     content = response.css('div .sqs-html-content')
     item['video'] = content[1].css('a::attr(href)').get()
-    item['desc'] = [BeautifulSoup(e).get_text() for e in content[2].css('p').getall()]
-    item['level'] = [e.strip() for e in content[3].css('h4::text').getall()]
+    item['desc'] = [BeautifulSoup(e, features="lxml").get_text() for e in content[2].css('p').getall()]
+    item['level'] = [e.strip() for e in content[3].xpath('.//h4[1]/text()').getall()]
     item['form'] = [BeautifulSoup(e).get_text() for e in content[4].css('p').getall()]
-    item['tutorial'] = [BeautifulSoup(e).get_text() for e in content[5].css('p').getall()]
-    item['prog_reg'] = [BeautifulSoup(e).get_text() for e in content[6].css('p').getall()[:-1]]
+    item['tutorial'] = [BeautifulSoup(e, features="lxml").get_text() for e in content[5].css('p').getall()]
+    item['prog_reg'] = [BeautifulSoup(e, features="lxml").get_text() for e in content[6].css('p').getall()[:-1]]
     return item
 
 data = {}

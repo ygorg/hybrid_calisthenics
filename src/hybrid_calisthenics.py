@@ -47,34 +47,46 @@ class HybridCalisthenicsSpider(scrapy.Spider):
         mvt['desc'] = content.xpath('.//p/text()').get()
         mvt['video'] = content.xpath('.//a/@href').get()
         mvt['background'] = response.css('.section-background img::attr(src)').get()
-        
-        yaml_export(f'_movement/{mvt["mvt_idx"]}.md', mvt)
-        yield mvt
+        mvt['progression'] = []
 
-        for i, prog in enumerate(response.css('figure')):
+        i = 0
+        for prog in response.css('figure'):
+            tmp = (prog.css('h3::text').get() or prog.css('h2::text').get())
+            if tmp.strip().startswith('#0'):
+                continue
+
+            i += 1
             item = {}
             item['mvt_idx'] = response.url.split('/')[-1]
-            item['prg_pos'] = i + 1
+            item['prg_pos'] = i
             prog_url = prog.css('a::attr(href)').get()
             item['prg_idx'] = prog_url[1:]
-            # item['name'] = (prog.css('h3::text').get() or prog.css('h2::text').get()).split('-', 1)[-1].strip()
+
             item['short_desc'] = prog.css('p::text').getall()[:-1]
             item['url'] = self.base_url + prog_url
             item['thumbnail'] = prog.css('img::attr(src)').get()
-            # mvt['progression'][item['url'][1:]] = scrapy.Request(self.base_url + item['url'], self.parse_progression, cb_kwargs={'item': item})
+            
+            mvt['progression'].append(item['prg_idx'])
             yield scrapy.Request(item['url'], callback=self.parse_progression, cb_kwargs={'item': item})
+
+        yaml_export(f'../_movement/{mvt["mvt_idx"]}.md', mvt)
+        yield mvt
 
     def parse_progression(self, response, item):
         self.logger.info(self.base_url + item['url'])
         item['name'] = (response.css('h2::text').get() or response.css('h3::text').get())
         content = response.css('div .sqs-html-content')
-        item['desc'] = [BeautifulSoup(e).get_text() for e in content[2].css('p').getall()]
-        item['level'] = [e.strip() for e in content[3].css('h4::text').getall()]
-        item['form'] = [BeautifulSoup(e).get_text() for e in content[4].css('p').getall()]
-        item['tutorial'] = [BeautifulSoup(e).get_text() for e in content[5].css('p').getall()]
-        item['prog_reg'] = [BeautifulSoup(e).get_text() for e in content[6].css('p').getall()[:-1]]
-        item['video'] = content[1].css('a::attr(href)').get()
+        if len(content) >= 12:
+            content = content[1:]
+        item['video'] = content[0].css('a::attr(href)').get()
+        item['desc'] = [BeautifulSoup(e, features="lxml").get_text() for e in content[1].css('p').getall()]
+        item['level'] = [e.strip() for e in content[2].xpath('.//h4[1]/text()').getall()]
+        if not item['level']:
+            item['level'] = [e.strip() for e in content[2].xpath('.//p[1]/text()').getall()]
+        item['form'] = [BeautifulSoup(e, features="lxml").get_text() for e in content[3].css('p').getall()]
+        item['tutorial'] = [BeautifulSoup(e, features="lxml").get_text() for e in content[4].css('p').getall()]
+        item['prog_reg'] = [BeautifulSoup(e, features="lxml").get_text() for e in content[5].css('p').getall()[:-1]]
 
-        yaml_export(f'_progression/{item["prg_idx"]}.md', item)
+        yaml_export(f'../_progression/{item["prg_idx"]}.md', item)
         return item
 
