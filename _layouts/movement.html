@@ -2,12 +2,13 @@
 layout: default
 ---
 
-<link rel="stylesheet" type="text/css" href="../assets/progression_card.css">
+<link rel="stylesheet" type="text/css" href="/assets/progression_card.css">
 
 <style>
 .preview-panel {
-    padding: 0.5em;
+    padding: 0 0 1.5em 1.5em;
     box-sizing: border-box;
+    border-radius: 0 0 10px 10px;
 
     .preview-content{
         padding-top: 30%;
@@ -20,10 +21,6 @@ layout: default
     .mvt_count {
         color: lightgreen;
     }
-
-    a{
-        color: #111;
-    }
 }
 </style>
 
@@ -34,47 +31,71 @@ layout: default
     </div>
 </div>
 
-<h4>Progressions</h4>
+<h3>Progressions</h4>
 
+<p>
+Swipe through the {{page.name | lower}} progressions below to find one that you can do comfortably and safely. When in doubt, please start with progression 1.
+</p>
+<p>
 {{page.desc}}
-
+</p>
 {% assign prog = site.progression | where: "mvt_idx", page.mvt_idx | sort:"prg_pos" %}
 
 <div class="progression-container">
 
+{% comment %}
 {% for p in prog %}
-
 {% include progression_card.html %}
-
 {% endfor %}
+{% endcomment %}
+
 </div>
 
+<script type="text/javascript" src="/assets/movement_card.js"></script>
 <script type="text/javascript">
-function update_history(prg_idx, set) {
-	let history = JSON.parse(localStorage.getItem('history'));
-	if (!history) {
-		history = {};
-	}
-	if (!history[prg_idx]) {
-		history[prg_idx] = [];
-	}
-	history[prg_idx].push({"date": new Date().toISOString(), "set": set});
-	localStorage.setItem("history", JSON.stringify(history));
+let h;
+
+
+function init() {
+    const level_reg = /\d+/;
+    fetch("/assets/data.json")
+    .then(response => response.json())
+    .then(json => {
+        data = json.reduce((acc, e) => {
+            if (e['level']) {
+                e['level'] = e['level'].map(l => {
+                    let [times, reps] = l.match(/\d+/g).map(n => parseInt(n, 10));
+                    return [...Array(times)].map(_ => reps);
+                })
+            }
+            if (e['prg_idx']) {
+                acc[e['prg_idx']] = e;
+            } else {
+                acc[e['mvt_idx']] = e;
+            }
+            return acc;
+        });
+        let hist = new History();
+        hist.data = data;
+        main(hist);
+    });
 }
 
-function logset(e) {
-	let set = [...e.target.parentElement.getElementsByTagName('input')].map(
-		(e) => parseInt(e.value, 10)
-	);
-	const prg_idx = e.target.parentElement.parentElement.id;
-	update_history(prg_idx, set);
+function main(hist) {
+    h = hist;
+
+    let container = document.getElementsByClassName('progression-container')[0];
+    let mvt_idx = document.URL.split('/').at(-1).split('.')[0];
+    h.data[mvt_idx]['progression'].map(prg_name => 
+        createProgCard(prg_name, h.data)
+    ).forEach((html) => {
+        container.innerHTML += html;
+    });
+
+    [...document.getElementsByClassName('progression-card')].forEach(
+        e => e.getElementsByTagName('button')[0].addEventListener('click', logset)
+    );
 }
 
-function main() {
-	[...document.getElementsByTagName('button')].forEach(
-		(e) => e.addEventListener('click', logset)
-	);
-}
-
-document.body.onload = main
+document.body.onload = init
 </script>

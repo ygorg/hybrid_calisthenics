@@ -1,0 +1,24 @@
+---
+---
+@import "colors";
+
+.streak-day {
+	float: left;
+	margin: .5ch;
+	display: flex;
+	width: 5ch; /* Set this to slightly wider than the longest string */
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	color: $pink;
+	border: 2px solid white;
+	background-color: transparent;
+}
+.streak-day.past {
+	border: 2px solid $pink;
+}
+.streak-day.done {
+	background-color: $pink;
+	color: white;
+}

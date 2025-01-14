@@ -1,12 +1,14 @@
 <figure id="{{p.prg_idx}}" class="progression-card">
-	
+
+	{% assign mvt = site.movement | where: "mvt_idx", p.mvt_idx | first %}
+
 	<img src="{{p.thumbnail}}">
 	<figcaption>
 		<a href="{{p.url}}">
-		<span class="prg_pos">Progression {{p.prg_pos}}</span>
+		<span class="prg_pos">{{mvt.name}} Progression {{p.prg_pos}}</span>
 		<span class="prg_name">{{p.name}}</span>
 		<span class="prg_level">
-			<svg width="12px" height="12px" viewBox="0 0 24 24" stroke="black" stroke-width="2" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg width="12px" height="12px" viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<circle cx="12" cy="12" r="9"/>
 			</svg>
 		 Level 1</span>

@@ -1,6 +1,7 @@
 ---
 title: Library
 layout: default
+sort_index: 1
 ---
 
 <!-- From https://github.com/midzer/urban-theme/blob/master/_includes/preview.html -->

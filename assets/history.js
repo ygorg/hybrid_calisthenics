@@ -1,0 +1,157 @@
+const history = {
+  "full-bridges": [{"date": "2025-01-01T11:05", "set": [10, 10, 10]}]
+};
+
+class History {
+  constructor() {
+    this.history = {};
+    this.data = null;
+    this.loadHistory();
+    this.MAX_LEVEL = 3;
+  }
+
+  loadHistory() {
+    const json = localStorage.getItem('history');
+    if (!json) {
+      this.history = {};
+    } else {
+      this.history = JSON.parse(json);  
+    }
+  }
+
+  saveHistory() {
+    localStorage.setItem(
+      "history",
+      JSON.stringify(this.history)
+    );
+  }
+
+  resetHistory() {
+    localStorage.removeItem('history');
+    this.loadHistory();
+  }
+
+  logSet(prg_idx, set, date) {
+    /*this.loadHistory();*/
+    if (!this.history[prg_idx]) {
+      this.history[prg_idx] = [];
+    }
+    if (!date) {
+      date = new Date().toISOString()
+    }
+    this.history[prg_idx].unshift({"date": date, "set": set});
+    this.saveHistory();
+  }
+
+  attempted(progression) {
+    /**
+     * Returns True if the progression was attempted
+     */
+    return progression in this.history;
+  }
+
+  lastSet(progression) {
+    /**
+     * Returns the last logged set for the given progression
+     */
+    return this.history[progression][0];
+  }
+
+  streakCount() {
+    let i = 0;
+    let date = new Date();
+    let workDate = Object.keys(this.iterPerDay());
+    while (workDate.includes(date.toISOString().slice(0,10))) {
+      i += 1;
+      date.setDate(date.getDate() - 1);
+    }
+    return i;
+  }
+
+  log2level(progression, log) {
+    /**
+     * Returns the level of the logged set
+     */
+    // for each level (starting with the highest)
+    for (let i = this.data[progression]['level'].length - 1; i >= 0; i--) {
+      const sets = this.data[progression]['level'][i];
+      // has the log enough sets? and are all the sets better or equal to the current level?
+      if (log.length >= sets.length && sets.every((value, index) => log[index] >= value)) {
+        return i + 1;
+      }
+    }
+    return 0;
+  }
+
+  currentLevel(progression) {
+    /**
+     * Returns the level of the progression based on previously logged sets.
+     */
+    // TODO add an option to search only the newer X months
+
+    let maxLevel = 0;
+
+    // For every logged set of the progression
+    for (let h of this.history[progression] || []) {
+      // find the maximum level achieved
+      const level = this.log2level(progression, h['set']);
+      if (maxLevel < level) {
+        maxLevel = level;
+      }
+
+      if (maxLevel === this.MAX_LEVEL) {
+        // If we found the maximum level then no need to check the rest
+        return maxLevel;
+      }
+    }
+
+    return maxLevel;
+  }
+
+  currentProgression(movement) {
+    /**
+     * Returns the next progression for a given movement.
+     */
+    // smallest progression not having a level 3
+    for (let progName of movement) {
+      // movement is sorted by increasing progression
+      if (this.currentLevel(progName) !== this.MAX_LEVEL) {
+        return progName;
+      }
+    }
+    return movement.at(-1);
+  }
+
+  getDay(year, month, day) {
+    month = String(month).padStart(2, '0'); // '09'
+    day = String(day).padStart(2, '0'); // '09'
+    return this.iterPerDay()[`${year}-${month}-${day}`];
+  }
+
+  iterPerDay() {
+    let arr = [];
+    // arr.concat(Object.entries(this.history))
+    for (let key in this.history) {
+      let mov_hist = this.history[key];
+      mov_hist.forEach((e) => e['prg'] = key);
+      arr = arr.concat(mov_hist)
+    };
+
+    var groupBy = function(xs, key) {
+      return xs.reduce(function(rv, x) {
+        (rv[key(x)] = rv[key(x)] || []).push(x);
+        return rv;
+      }, {});
+    };
+
+    let groupedHist = groupBy(arr, (e) => new Date(e['date'].slice(0,10)));
+
+    const altObj = Object.fromEntries(
+      Object.entries(groupedHist).map(([key, value]) => 
+        // Modify key here
+        [value[0]['date'].slice(0,10), value]
+      )
+    )
+    return altObj;
+  }
+}

@@ -1,25 +1,42 @@
+---
+---
+@import "colors";
+
+.progression-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: stretch;
+}
+
 .progression-card {
-	/*height: 200px;*/
-	/*margin: 10px;*/
+	background-color: $dark-blue;
+
+	/*height: 200px*/
+	padding: 10px;
 	display: flex;
 	align-items: center;
 
 	img {
 		width: 40%;
-	    border: 1px solid #e8e8e8;
-	    border-radius: 10px;
+		border: 1px solid $grey;
+		border-radius: 10px;
 	}
+
 	figcaption {
 		width: 35%;
 		padding: 10px;
+
 		span {
 			display: block;
 		}
+		
 		.prg_pos {
 			color: grey;
 			font-size: smaller;
 		}
-		.prg_name {
+		
+		.prg_name{
 			font-size: larger;
 		}
 	}
@@ -27,6 +44,7 @@
 
 .logsets {
 	float: right;
+
 	input {
 		width: 50px;
 	}

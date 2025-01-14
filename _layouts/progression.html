@@ -3,6 +3,9 @@ layout: default
 ---
 
 <style>
+.header video {
+    width: 100%;
+}
 .preview-panel {
     padding: 0.5em;
     box-sizing: border-box;
@@ -25,11 +28,11 @@ layout: default
 }
 </style>
 
-<div class="preview-panel" style="background: linear-gradient(0deg, rgb(0, 0, 0, 0.6) 0%, rgb(0, 0, 0, 0.5) 30%, transparent 50%), url('{{page.thumbnail}}') center; background-size: cover;">
-    <div class="preview-content">
-        <h1 class="mvt_name">{{page.name}} Progressions</h1>
-        <span class="mvt_count"><a href="{{page.video}}">Watch Video</a></span>
-    </div>
+<div class="header">
+<video autoplay muted loop>
+    <source src="https://github.com/shinosteph/calisthenics-routine/raw/refs/heads/main/media/{{page.prg_idx | replace: '-', '_'}}.mp4" type="video/webm" poster="{{page.thumbnail}}">
+    Your browser does not support the video tag.
+</video>
 </div>
 
 {% assign mvt = site.movement | find:"mvt_idx",page.mvt_idx %}
@@ -37,21 +40,100 @@ layout: default
 <span>{{mvt.name}} Progression {{page.prg_pos}}</span>
 <h1>{{page.name}}</h1>
 
-<h3>Overview</h3>
+<style>
+#log {
+    border: 2px white;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    p, input {
+        margin: 0 1rem 0 1rem;
+        text-align: center;
+    }
+    input {
+        width: 4rem;
+        background: transparent;
+        color: white;
+        border: none;
+    }
+    button {
+        float: left;
+        margin: .5ch;
+        display: flex;
+        font-size: 2rem;
+        height: 4ch; /* Set this to slightly wider than the longest string */
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        color: white;
+        border: 2px solid white;
+        background-color: transparent;
+    }
+}  
+</style>
+<script type="text/javascript">
+function changeQuantity(n) {
+    let e = document.getElementsByTagName('input')[0];
+    e.value = parseInt(e.value, 10) + n;
+}
+</script>
 
-{{page.desc}}
+<div id="log">
+    <button onclick="changeQuantity(-1)">-</button>
+    <div>
+        <p>Set 1</p>
+        <input value="20" style="font-size: 2rem;"/>
+        <p style="color: gray; font-size: 0.8rem">Reps</p>
+    </div>
+    <button onclick="changeQuantity(1)">+</button>
+    <div>
+        <p>Save Set</p>
+        <p>I'm Done</p>
+    </div>
+</div>
+<p>
+    Do as many as you safely can !
+</p>
+<p>
+    Push yourself hard, but end your set when your form starts breaking down too much.
+</p>
 
-<h3>Levels</h3>
-{{page.levels}}
+<h2>Overview</h2>
 
-<h3>Tutorial</h3>
-{{page.tutorial}}
+{{page.desc | join: " "}}
 
-<h3>Form Cues</h3>
-{{page.form}}
+<h2>Levels</h2>
+<div style="display: flex; justify-content: space-evenly;">
+{% for text in page.level %}
+<div style=" text-align: center; border-left: 2px white;">
+    <p style="margin-bottom: 0">LEVEL {{forloop.index}}</p>
+    <p style="color: grey">{{text}}</p>
+</div>
+{% endfor %}
+</div>
 
-<h3>Progression / Regression</h3>
-{{page.prog_reg}}
+<h2>Tutorial</h2>
+<ol>
+{% for text in page.tutorial %}
+<li>{{text}}</li>
+{% endfor %}
+</ol>
+
+<h2>Form Cues</h2>
+<ul>
+{% for text in page.form %}
+<li>{{ text }}</li>
+{% endfor %}
+</ul>
+
+
+<h2>Progression / Regression</h2>
+<ul>
+{% for text in page.prog_reg %}
+<li>{{ text }}</li>
+{% endfor %}
+</ul>
 
 
 
