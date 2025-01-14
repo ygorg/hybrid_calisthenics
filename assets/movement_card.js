@@ -48,6 +48,7 @@ function createProgCard(prg_idx, data) {
     card += `       </a>
     </figcaption>`;
 
+    /*
     card += '<div class="logsets">';
 
     card += [1, 2, 3].map((i) => `<div>
@@ -56,7 +57,7 @@ function createProgCard(prg_idx, data) {
     </div>`).join('\n');
 
     card += '       <button>Log sets</button>\
-        </div>\
-    </figure>';
+        </div>';\*/
+    card += '</figure>';
     return card;
 }

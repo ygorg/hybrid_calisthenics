@@ -38,11 +38,10 @@ layout: default
 {% assign mvt = site.movement | find:"mvt_idx",page.mvt_idx %}
 
 <span>{{mvt.name}} Progression {{page.prg_pos}}</span>
-<h1>{{page.name}}</h1>
+<h1 id="{{page.prg_idx}}">{{page.name}}</h1>
 
 <style>
-#log {
-    border: 2px white;
+#log > div {
     justify-content: center;
     display: flex;
     align-items: center;
@@ -56,7 +55,7 @@ layout: default
         color: white;
         border: none;
     }
-    button {
+    button.qty {
         float: left;
         margin: .5ch;
         display: flex;
@@ -70,34 +69,99 @@ layout: default
         border: 2px solid white;
         background-color: transparent;
     }
-}  
-</style>
-<script type="text/javascript">
-function changeQuantity(n) {
-    let e = document.getElementsByTagName('input')[0];
-    e.value = parseInt(e.value, 10) + n;
 }
-</script>
+
+/* https://stackoverflow.com/a/36317392 */
+#rest-overlay {
+  border-radius: 20px 20px 0 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 15%;
+  overflow: hidden;
+  background-color: darkblue;
+  color: #FFF;
+  transition: all 1s;
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column nowrap;
+  > * {
+    text-align: center;
+  }
+}
+#rest-overlay.close {
+  height: 0%;
+  top: 100%;
+}
+
+.progress {
+    display: inline-block;
+    width: 400px;
+    height: 25px;
+    margin: 35px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid gray;
+}
+
+.bar {
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    transition: width;
+    transition-duration: 1s;
+    transition-timing-function: cubic-bezier(.36,.55,.63,.48);
+    background-color: #ffadff;
+}
+
+.overlap {
+    background-color: hsl(181, 97%, 73%);
+}
+
+.container {
+    text-align: center;
+}
+</style>
 
 <div id="log">
-    <button onclick="changeQuantity(-1)">-</button>
     <div>
-        <p>Set 1</p>
-        <input value="20" style="font-size: 2rem;"/>
-        <p style="color: gray; font-size: 0.8rem">Reps</p>
+        <button class="qty" onclick="changeQuantity(-1)">-</button>
+        <div>
+            <p>Set <span id="set-nb">0</span></p>
+            <input value="20" style="font-size: 2rem;"/>
+            <p style="color: gray; font-size: 0.8rem">Reps</p>
+        </div>
+        <button class="qty" onclick="changeQuantity(1)">+</button>
     </div>
-    <button onclick="changeQuantity(1)">+</button>
     <div>
-        <p>Save Set</p>
-        <p>I'm Done</p>
+        <button onclick="toggleOverlay()">Save Set</button>
+        <button onclick="saveSet()">I'm Done</button>
+        <span>Workout :</span>
+        <div id="saved-sets"></div>
     </div>
 </div>
-<p>
+<p style="text-align: center;">
     Do as many as you safely can !
 </p>
-<p>
+<p style="text-align: center; color: gray">
     Push yourself hard, but end your set when your form starts breaking down too much.
 </p>
+
+<div id="rest-overlay" class="close">
+    <h2>Great work !</h2>
+    <button onclick="toggleOverlay()">Close</button>
+    <p style="text-align: center;">Now it's time to rest for 2-3 minutes.</p>
+    <p style="text-align: center; color: gray">Focus on breathing, move around, and prepare tourself for your next set.</p>
+    
+    <div class="container">
+        <div id="countdown-container">
+            <span id="minutes">3</span>:<span id="seconds">00</span> seconds
+        </div>
+        <div class="progress">
+            <div class="bar shadow overlap"></div>
+        </div>
+    </div>
+</div>
 
 <h2>Overview</h2>
 
@@ -137,3 +201,129 @@ function changeQuantity(n) {
 
 
 
+<script type="text/javascript">
+let h;
+let set = [];
+
+function nextSet(hist, prg_idx) {
+    // Updating set number
+    let setCountElt = document.querySelector('#set-nb');
+    let currentSet = parseInt(setCountElt.innerHTML, 10) + 1;
+    setCountElt.innerHTML = currentSet;
+
+    // Updating reps placeholder
+
+    const prg = hist.data[prg_idx];
+    let level = hist.currentLevel(prg_idx);
+    let set_placeholder = prg['level'][0];
+    if (h.attempted(prg_idx)) {
+        set_placeholder = h.lastSet(prg_idx)['set'] || 0;
+    }
+
+    document.querySelector('#log input').value = set_placeholder[Math.min(currentSet, set_placeholder.length-1)];
+}
+
+function changeQuantity(n) {
+    let e = document.getElementsByTagName('input')[0];
+    e.value = parseInt(e.value, 10) + n;
+}
+
+function saveSet() {
+    if (set.length == 0) {
+        return;
+    }
+    let prg_idx = document.getElementsByTagName('h1')[0].id;
+    let date = new Date();
+    h.logSet(prg_idx, set, date);
+    set = [];
+    document.getElementById('saved-sets').innerHTML = set.join(', ');
+}
+
+
+function toggleOverlay() {
+    document.getElementById('rest-overlay').classList.toggle('close');
+    if (!currentCountdown) {
+        // Saving reps
+        set.push(parseInt(document.querySelector('#log input').value, 10));
+        document.getElementById('saved-sets').innerHTML = set.join(', ');
+        startCountdown(5);
+        let prg_idx = document.querySelector('h1').id;
+        nextSet(h, prg_idx);
+    } else {
+        stopCountdown();
+    }
+}
+
+let currentCountdown = null, currentCountdownAmount = 0;
+
+function startCountdown(s) {
+    if (currentCountdown) {
+        stopCountdown();
+    }
+    currentCountdownAmount = s;
+    document.getElementById("seconds").innerHTML = String(s%60).padStart(2, '0');
+    document.getElementById("minutes").innerHTML = String((s-s%60)/60).padStart(2, '0');
+    currentCountdown = setInterval(updateCountdown, 1000);
+}
+
+function stopCountdown() {
+    clearInterval(currentCountdown);
+    currentCountdown = null;
+}
+
+function updateCountdown() {
+    let sElt = document.getElementById("seconds");
+    let s = parseInt(sElt.innerHTML, 10);
+    let mElt = document.getElementById("minutes");
+    let m = parseInt(mElt.innerHTML, 10)
+
+    s -= 1;
+    if (s < 0) {
+        s = 59
+        m -= 1;
+    }
+
+    if (m <= 0 && s <= 0) {
+        // Removing the overlay before resetting the countdown !
+        toggleOverlay();
+        stopCountdown();
+    }
+
+    mElt.innerHTML = String(m).padStart(2, '0');
+    sElt.innerHTML = String(s).padStart(2, '0');
+    document.getElementsByClassName('bar')[0].style.width = (m * 60 + s) / currentCountdownAmount * 100 + '%';
+}
+
+function main(hist) {
+    h = hist;
+    let prg_idx = document.getElementsByTagName('h1')[0].id;
+    nextSet(h, prg_idx);
+}
+
+function init() {
+    const level_reg = /\d+/;
+    fetch("/assets/data.json")
+    .then(response => response.json())
+    .then(json => {
+        data = json.reduce((acc, e) => {
+            if (e['level']) {
+                e['level'] = e['level'].map(l => {
+                    let [times, reps] = l.match(/\d+/g).map(n => parseInt(n, 10));
+                    return [...Array(times)].map(_ => reps);
+                })
+            }
+            if (e['prg_idx']) {
+                acc[e['prg_idx']] = e;
+            } else {
+                acc[e['mvt_idx']] = e;
+            }
+            return acc;
+        }, {});
+        let hist = new History();
+        hist.data = data;
+        main(hist);
+    });
+}
+
+document.body.onload = init
+</script>

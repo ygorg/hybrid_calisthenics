@@ -34,7 +34,7 @@ layout: default
 <h3>Progressions</h4>
 
 <p>
-Swipe through the {{page.name | lower}} progressions below to find one that you can do comfortably and safely. When in doubt, please start with progression 1.
+Swipe through the {{page.name | downcase}} progressions below to find one that you can do comfortably and safely. When in doubt, please start with progression 1.
 </p>
 <p>
 {{page.desc}}
@@ -74,7 +74,7 @@ function init() {
                 acc[e['mvt_idx']] = e;
             }
             return acc;
-        });
+        }, {});
         let hist = new History();
         hist.data = data;
         main(hist);
@@ -92,9 +92,9 @@ function main(hist) {
         container.innerHTML += html;
     });
 
-    [...document.getElementsByClassName('progression-card')].forEach(
+    /*[...document.getElementsByClassName('progression-card')].forEach(
         e => e.getElementsByTagName('button')[0].addEventListener('click', logset)
-    );
+    );*/
 }
 
 document.body.onload = init

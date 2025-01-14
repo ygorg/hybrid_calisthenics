@@ -130,7 +130,6 @@ class History {
 
   iterPerDay() {
     let arr = [];
-    // arr.concat(Object.entries(this.history))
     for (let key in this.history) {
       let mov_hist = this.history[key];
       mov_hist.forEach((e) => e['prg'] = key);
@@ -150,7 +149,7 @@ class History {
       Object.entries(groupedHist).map(([key, value]) => 
         // Modify key here
         [value[0]['date'].slice(0,10), value]
-      )
+      ).sort().reverse()
     )
     return altObj;
   }

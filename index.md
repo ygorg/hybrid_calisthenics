@@ -19,21 +19,21 @@ sort_index: 0
 		<div class="streak-day">{{day}}</div>
 	{% endfor %}
 	</div>
-	<div>
-		<p>
-			<span id="streak-count">5</span>
-			<span>Day Activity Streak</span>
-		</p>
-		<p>
-			<span id="workout-count">22</span>
-			<span>Total Workouts</span>
-		</p>
+	<div class="streak-info-container">
+		<div class="streak-info">
+			<p class="streak-nb" id="streak-count">5</p>
+			<p class="streak-legend">Day Activity Streak</p>
+		</div>
+		<div class="streak-info">
+			<p class="streak-nb" id="workout-count">22</p>
+			<p class="streak-legend">Total Workouts</p>
+		</div>
 	</div>
 </div>
 
 <h2>Start Your New Routine</h2>
 
-<div>
+<div class="routine-container">
 	<h2>January 8th</h2>
 	<div class="progression-container"></div>
 	{% comment %}
@@ -111,7 +111,7 @@ function init() {
 				acc[e['mvt_idx']] = e;
 			}
 			return acc;
-		});
+		}, {});
 		let hist = new History();
 		hist.data = data;
 		main(hist);
@@ -129,7 +129,12 @@ function main(hist) {
 
 	document.getElementById('streak-count').innerHTML = h.streakCount();
 	document.getElementById('workout-count').innerHTML = Object.keys(h.iterPerDay()).length;
-
+	
+	let month = date.toLocaleString('en-US', { month: 'long' });
+	month = month[0].toUpperCase() + month.substring(1);
+	//@ from https://stackoverflow.com/a/39466341
+	function nth(n){return n + ["st","nd","rd"][((n+90)%100-10)%10-1]||n+"th"}
+	document.querySelector('.routine-container h2').innerHTML = `${month} ${nth(date.getDate())}`;
 
     let container = document.getElementsByClassName('progression-container')[0];
 	nextRoutine().map(mvt => createProgCard(
@@ -140,9 +145,9 @@ function main(hist) {
 		container.innerHTML += html;
 	});
 
-	[...document.getElementsByClassName('progression-card')].forEach(
+	/*[...document.getElementsByClassName('progression-card')].forEach(
         e => e.getElementsByTagName('button')[0].addEventListener('click', logset)
-    );
+    );*/
 }
 
 document.body.onload = init

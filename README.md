@@ -51,19 +51,20 @@ Routine
 [x] Display the next level to attain (given the history)
 [x] Generer automatiquement la routine du jour
 [x] Display the last logged set or the first level
-
-[ ] Think of a workout page (with a timer etc...)
+[x] Think of a workout page (with a timer etc...)
 	- it should have a way to validate 1 set, then wait 3 minutes
 	- it should display the video
 	- maybe just add a logging interface to the progression page (but then it doesn't feel like a Routine as it feels in the app)
 	- Now:
 	1. Home -> Let's Go (exercices)
 	2. Workout Detail -> Let's Go (Repetition + Rest + Cute speech)
+		- Useless
 	3. Movement 1 -> Log Sets (progression page with an Arrow)
 		- Useless
 	4. Exercice -> Save Hold (Video, Movement 1 of 2, Set 1 - 15 +, Cute speech, Level, Set 1)
 	5. Wait -> X (optionnal + cute speech)
 	6. Go to 4
+[ ] Add an end of workout screen (for extra cheer)
 [ ] Load / save history (for inter device)
 	- save button: creates a text area with the json inside and a button to copy to clipboard (in pretty print so people can easily edit)
 	- load button: creates a text area to paste in and a validation button.

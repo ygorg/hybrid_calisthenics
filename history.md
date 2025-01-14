@@ -4,9 +4,10 @@ layout: default
 sort_index: 2
 ---
 
+<div id="history-container"></div>
+
 <button onclick="reset()">Reset</button>
 
-<div id="history-container"></div>
 
 <script>
 let h;
@@ -48,7 +49,7 @@ function init() {
 				acc[e['mvt_idx']] = e;
 			}
 			return acc;
-		});
+		}, {});
 		let hist = new History();
 		hist.data = data;
 		main(hist);

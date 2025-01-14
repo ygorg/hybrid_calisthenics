@@ -2,10 +2,13 @@
 ---
 @import "colors";
 
-.streak-day {
-	float: left;
-	margin: .5ch;
+.streak-week {
 	display: flex;
+	justify-content: flex-start;
+}
+.streak-day {
+	display: flex;
+	margin: .5ch;
 	width: 5ch; /* Set this to slightly wider than the longest string */
 	align-items: center;
 	justify-content: center;
@@ -21,4 +24,26 @@
 .streak-day.done {
 	background-color: $pink;
 	color: white;
+}
+
+.streak-info-container {
+	display: flex;
+	justify-content: flex-start;
+	.streak-info {
+		margin-right: 1rem;
+	}
+	.streak-nb {
+		margin-bottom: 0;
+	}
+	.streak-legend {
+		font-size: 0.9rem;
+		color: $grey;
+	}
+}
+
+.routine-container {
+	padding: 1rem;
+	border: 2px solid $grey;
+	border-radius: 0.75rem;
+	background-color: lighten($dark-blue, 10%);
 }

@@ -1,12 +1,14 @@
 ---
 ---
 
-@import "minima";
+//@import "minima";
 @import "colors";
 
 body {
+  padding: 1rem;
 	background-color: $dark-blue;
 	color: white;
+  font: 400 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 a {
@@ -26,7 +28,8 @@ a:hover {
 
 footer {
   position: fixed;
-  bottom: 0px;
+  bottom: 0;
+  left: 0;
   width: 100%;
 }
 nav {
