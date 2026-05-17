@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use "color_theme";
 
 .streak-week {
@@ -43,5 +44,5 @@
 	padding: 1rem;
 	border: 2px solid color_theme.$grey;
 	border-radius: 0.75rem;
-	background-color: lighten(color_theme.$dark-blue, 10%);
+	background-color: color.adjust(color_theme.$dark-blue, $lightness: 10%);
 }
