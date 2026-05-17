@@ -4,9 +4,6 @@ layout: default
 sort_index: 0
 ---
 
-<link rel="stylesheet" type="text/css" href="assets/progression_card.css">
-<link rel="stylesheet" type="text/css" href="assets/streak.css">
-
 <h1>Greetings, friend</h1>
 
 <span>Hey friend it looks like you have a streak going, keep it up!</span>

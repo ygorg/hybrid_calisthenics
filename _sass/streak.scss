@@ -1,6 +1,4 @@
----
----
-@import "colors";
+@use "color_theme";
 
 .streak-week {
 	display: flex;
@@ -14,15 +12,15 @@
 	justify-content: center;
 	aspect-ratio: 1 / 1;
 	border-radius: 50%;
-	color: $pink;
+	color: color_theme.$pink;
 	border: 2px solid white;
 	background-color: transparent;
 }
 .streak-day.past {
-	border: 2px solid $pink;
+	border: 2px solid color_theme.$pink;
 }
 .streak-day.done {
-	background-color: $pink;
+	background-color: color_theme.$pink;
 	color: white;
 }
 
@@ -37,13 +35,13 @@
 	}
 	.streak-legend {
 		font-size: 0.9rem;
-		color: $grey;
+		color: color_theme.$grey;
 	}
 }
 
 .routine-container {
 	padding: 1rem;
-	border: 2px solid $grey;
+	border: 2px solid color_theme.$grey;
 	border-radius: 0.75rem;
-	background-color: lighten($dark-blue, 10%);
+	background-color: lighten(color_theme.$dark-blue, 10%);
 }

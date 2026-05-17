@@ -1,12 +1,14 @@
 ---
 ---
 
-//@import "minima";
-@import "colors";
+//@use "minima";
+@use "color_theme";
+@use "progression_card";
+@use "streak";
 
 body {
   padding: 1rem;
-	background-color: $dark-blue;
+	background-color: color_theme.$dark-blue;
 	color: white;
   font: 400 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
