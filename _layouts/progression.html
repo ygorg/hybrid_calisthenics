@@ -30,7 +30,9 @@ layout: default
 
 <div class="header">
 <video autoplay muted loop>
-    <source src="https://github.com/shinosteph/calisthenics-routine/raw/refs/heads/main/media/{{page.prg_idx | replace: '-', '_'}}.mp4" type="video/webm" poster="{{page.thumbnail}}">
+    <!--source src="https://github.com/shinosteph/calisthenics-routine/raw/refs/heads/main/media/{{page.prg_idx | replace: '-', '_'}}.mp4" type="video/webm" poster="{{page.thumbnail}}"-->
+    <source
+    src="//imgur.com/{{page.video | split: '/' | last}}.mp4" type="video/webm" poster="{{page.thumbnail}}">
     Your browser does not support the video tag.
 </video>
 </div>
