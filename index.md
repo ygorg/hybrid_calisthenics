@@ -31,7 +31,7 @@ sort_index: 0
 <h2>Start Your New Routine</h2>
 
 <div class="routine-container">
-	<h2>January 8th</h2>
+	<h2 style="margin-top:0px">January 8th</h2>
 	<div class="progression-container"></div>
 	{% comment %}
 	{% assign p = site.progression[0] %}

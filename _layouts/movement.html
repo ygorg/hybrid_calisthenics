@@ -25,7 +25,7 @@ layout: default
 <div class="preview-panel" style="background: linear-gradient(0deg, rgb(0, 0, 0, 0.6) 0%, rgb(0, 0, 0, 0.5) 30%, transparent 50%), url('{{page.background}}') center; background-size: cover;">
     <div class="preview-content">
         <h1 class="mvt_name">{{page.name}} Progressions</h1>
-        <span class="mvt_count"><a href="{{page.video}}">Watch Video</a></span>
+        <span class="mvt_count" {% unless page.video %}style="visibility: hidden"{% endunless %}><a href="{{page.video}}">Watch Video</a></span>
     </div>
 </div>
 

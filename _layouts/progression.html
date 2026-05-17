@@ -39,7 +39,7 @@ layout: default
 
 {% assign mvt = site.movement | find:"mvt_idx",page.mvt_idx %}
 
-<span>{{mvt.name}} Progression {{page.prg_pos}}</span>
+<span><a href="{{mvt.url}}">{{mvt.name}}</a> Progression {{page.prg_pos}}</span>
 <h1 id="{{page.prg_idx}}">{{page.name}}</h1>
 
 <style>
