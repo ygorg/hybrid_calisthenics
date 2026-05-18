@@ -102,6 +102,10 @@ button {
     height: 45px;
 }
 
+.disable-dbl-tap-zoom {
+    touch-action: manipulation;
+}
+
 .progress {
     height: 25px;
     margin: 35px;
@@ -131,13 +135,13 @@ button {
 
 <div id="log">
     <div>
-        <button class="qty" onclick="changeQuantity(-1)">-</button>
+        <button class="qty disable-dbl-tap-zoom" onclick="changeQuantity(-1)">-</button>
         <div>
             <p>Set <span id="set-nb">0</span></p>
             <input value="20" style="font-size: 2rem;"/>
             <p style="color: gray; font-size: 0.8rem">Reps</p>
         </div>
-        <button class="qty" onclick="changeQuantity(1)">+</button>
+        <button class="qty disable-dbl-tap-zoom" onclick="changeQuantity(1)">+</button>
     </div>
     <div>
         <button onclick="toggleOverlay()">Next Set</button>
