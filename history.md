@@ -21,10 +21,8 @@ function main(hist) {
 	h = hist;
 	let container = document.getElementById('history-container');
 	container.innerHTML = '';
-
 	Object.entries(h.iterPerDay()).forEach(([date, hist]) => {
-
-		let content = hist.map((e) => `<li>${h.data[e['prg']]['name']} ${e['set']}</li>`).join('\n')
+		let content = hist.map((e) => `<li><a href="progression/${e['prg']}.html">${h.data[e['prg']]['name']}</a> : ${e['set']}</li>`).join('\n')
 
 		container.innerHTML += `<h2>${date}</h2>` + "<ul>" + content + "</ul>";
 	});
