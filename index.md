@@ -40,8 +40,9 @@ sort_index: 0
 	{% include progression_card.html %}
 	{% endcomment %}
 </div>
-<script type="text/javascript" src="assets/movement_card.js"></script>
 
+<script type="text/javascript" src="/assets/utils.js"></script>
+<script type="text/javascript" src="assets/movement_card.js"></script>
 <script type="text/javascript">
 let h;
 
@@ -91,28 +92,11 @@ function nextRoutine() {
 }
 
 function init() {
-	const level_reg = /\d+/;
-	fetch("/assets/data.json")
-	.then(response => response.json())
-	.then(json => {
-		data = json.reduce((acc, e) => {
-			if (e['level']) {
-				e['level'] = e['level'].map(l => {
-					let [times, reps] = l.match(/\d+/g).map(n => parseInt(n, 10));
-					return [...Array(times)].map(_ => reps);
-				})
-			}
-			if (e['prg_idx']) {
-				acc[e['prg_idx']] = e;
-			} else {
-				acc[e['mvt_idx']] = e;
-			}
-			return acc;
-		}, {});
-		let hist = new History();
-		hist.data = data;
-		main(hist);
-	});
+    load_movement_data(data => {
+        let hist = new History();
+        hist.data = data;
+        main(hist);
+    });
 }
 
 function main(hist) {
