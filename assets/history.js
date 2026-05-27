@@ -136,7 +136,6 @@ class History {
       const progName = movement[i];
       // movement is sorted by increasing progression so we reverse it
       let level = this.currentLevel(progName);
-      console.log(i, level);
       if (level > 0 && level < this.MAX_LEVEL) {
         return progName;
       } else if (level > 0 && level == this.MAX_LEVEL) {
