@@ -8,7 +8,7 @@ sort_index: 2
 
 <button onclick="reset()">Reset</button>
 
-<script type="text/javascript" src="/assets/utils.js"></script>
+<script type="text/javascript" src="{{"assets/utils.js" | relative_url}}"></script>
 <script type="text/javascript">
 let h;
 

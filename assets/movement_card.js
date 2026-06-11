@@ -1,3 +1,6 @@
+---
+---
+
 function logset(e) {
 	let set = [...e.target.parentElement.getElementsByTagName('input')].map(
 		e => parseInt(e.value, 10)
@@ -41,7 +44,7 @@ function createProgCard(prg_idx, data) {
     card += `<figure id="${prg['prg_idx']}" class="progression-card">`;
     card += `   <img src="${prg['thumbnail']}">`;
     card += `   <figcaption>`;
-    card += `       <a href="/progression/${prg['prg_idx']}.html">
+    card += `       <a href="{{site.baseurl}}/progression/${prg['prg_idx']}.html">
         <span class="prg_pos">${data[prg['mvt_idx']]['name']} Progression ${prg['prg_pos']}</span>
         <span class="prg_name">${prg['name']}</span>
         <span class="prg_level">${level2icon(level)} Level ${level || 1}</span>`;

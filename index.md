@@ -33,16 +33,12 @@ sort_index: 0
 <div class="routine-container">
 	<h2 style="margin-top:0px">January 8th</h2>
 	<div class="progression-container"></div>
-	{% comment %}
-	{% assign p = site.progression[0] %}
-	{% include progression_card.html %}
-	{% assign p = site.progression[3] %}
-	{% include progression_card.html %}
-	{% endcomment %}
 </div>
 
-<script type="text/javascript" src="/assets/utils.js"></script>
-<script type="text/javascript" src="assets/movement_card.js"></script>
+<script type="text/javascript" src="{{ "assets/utils.js" | relative_url }}"></script>
+
+<script type="text/javascript" src="{{ "assets/movement_card.js" | relative_url }}"></script>
+
 <script type="text/javascript">
 let h;
 

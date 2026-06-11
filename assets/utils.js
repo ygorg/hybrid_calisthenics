@@ -1,6 +1,9 @@
+---
+---
+
 function load_movement_data(callback) {
 	const level_reg = /\d+/g;
-	fetch("/assets/data.json")
+	fetch("{{ "assets/data.json" | relative_url }}")
 	.then(response => response.json())
 	.then(json => {
 		data = json.reduce((acc, e) => {
