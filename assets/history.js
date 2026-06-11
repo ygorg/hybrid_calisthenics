@@ -66,14 +66,24 @@ class History {
   streakCount() {
     /**
      * Count the number of days from today with at least a saved set.
-     * TODO: how to include rest days ?
+     * TODO: how to include rest days ? Is it always the rest days of the chosen routine ? or 1 rest day every X workout ?
+     * TODO: make a Routines object
      */
     let i = 0;
     let date = new Date();
     let workDate = Object.keys(this.iterPerDay());
-    while (workDate.includes(date.toISOString().slice(0,10))) {
+
+    const completedWorkout = (d) => {return workDate.includes(d.toISOString().slice(0,10))};
+    const previousDay = (d) => {d.setDate(d.getDate() - 1);}
+
+    // If no workout were performed today (yet!) skip the day
+    if (!completedWorkout(date)) {
+      previousDay(date);
+    }
+
+    while (completedWorkout(date)) {
       i += 1;
-      date.setDate(date.getDate() - 1);
+      previousDay(date);
     }
     return i;
   }
