@@ -29,10 +29,10 @@ layout: default
 </style>
 
 <div class="header">
-<video autoplay muted loop>
+<video autoplay muted loop poster="{{page.thumbnail}}">
     <!--source src="https://github.com/shinosteph/calisthenics-routine/raw/refs/heads/main/media/{{page.prg_idx | replace: '-', '_'}}.mp4" type="video/webm" poster="{{page.thumbnail}}"-->
     <source
-    src="//imgur.com/{{page.video | split: '/' | last}}.mp4" type="video/webm" poster="{{page.thumbnail}}">
+    src="https://imgur.com/{{page.video | split: '/' | last}}.mp4" type="video/webm">
     Your browser does not support the video tag.
 </video>
 </div>
@@ -182,7 +182,7 @@ button {
 <h2>Levels</h2>
 <div style="display: flex; justify-content: space-evenly;">
 {% for text in page.level %}
-<div style=" text-align: center; border-left: 2px white;">
+<div style=" text-align: center; border-left: 2px white; width: 12rem;">
     <p style="margin-bottom: 0">LEVEL {{forloop.index}}</p>
     <p style="color: grey">{{text}}</p>
 </div>
