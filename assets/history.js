@@ -15,7 +15,7 @@ class History {
 
   loadHistory() {
     const json = localStorage.getItem('history');
-    if (!json) {
+    if (json === null) {
       this.history = {};
     } else {
       this.history = JSON.parse(json);  
