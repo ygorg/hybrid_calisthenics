@@ -114,13 +114,18 @@ function main(hist) {
 	document.querySelector('.routine-container h2').innerHTML = `${month} ${nth(date.getDate())}`;
 
     let container = document.getElementsByClassName('progression-container')[0];
-	nextRoutine().map(mvt => createProgCard(
-			h.currentProgression(h.data[mvt]['progression']),
-			h.data
-		)
-	).forEach((html) => {
-		container.innerHTML += html;
-	});
+    let nextMovements = nextRoutine();
+    if (nextMovements === 'rest') {
+    	container.innerHTML += "Today is rest day ! Come back tomorrow.";
+    } else {
+		nextMovements.map(mvt => createProgCard(
+				h.currentProgression(h.data[mvt]['progression']),
+				h.data
+			)
+		).forEach((html) => {
+			container.innerHTML += html;
+		});
+	}
 
 	/*[...document.getElementsByClassName('progression-card')].forEach(
         e => e.getElementsByTagName('button')[0].addEventListener('click', logset)
