@@ -29,10 +29,10 @@ layout: default
 </style>
 
 <div class="header">
-<video autoplay muted loop poster="{{page.thumbnail}}">
-    <!--source src="https://github.com/shinosteph/calisthenics-routine/raw/refs/heads/main/media/{{page.prg_idx | replace: '-', '_'}}.mp4" type="video/webm" poster="{{page.thumbnail}}"-->
+<video playsinline autoplay muted loop poster="{{page.thumbnail}}">
+    <!--source src="https://github.com/shinosteph/calisthenics-routine/raw/refs/heads/main/media/{{page.prg_idx | replace: '-', '_'}}.mp4" type="video/mp4" poster="{{page.thumbnail}}"-->
     <source
-    src="https://imgur.com/{{page.video | split: '/' | last}}.mp4" type="video/webm">
+    src="https://imgur.com/{{page.video | split: '/' | last}}.mp4" type="video/mp4">
     Your browser does not support the video tag.
 </video>
 </div>
