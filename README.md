@@ -65,11 +65,11 @@ Routine
 	5. Wait -> X (optionnal + cute speech)
 	6. Go to 4
 [ ] Add an end of workout screen (for extra cheer)
-[ ] Load / save history (for inter device)
+[x] Load / save history (for inter device)
 	- save button: creates a text area with the json inside and a button to copy to clipboard (in pretty print so people can easily edit)
 	- load button: creates a text area to paste in and a validation button.
 		- the validation should trigger a message stating the total workouts and make understand that it will overwrite the current history
 [ ] Allow to change routine (see the routine variable)
-[ ] Allow to edit history
+[x] Allow to edit history
 
 - Think about how to display history (per movement, per progression, dedicated tab, using a calendar)

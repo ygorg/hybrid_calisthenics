@@ -229,10 +229,10 @@ function nextSet(hist, prg_idx) {
     let level = hist.currentLevel(prg_idx);
     let set_placeholder = prg['level'][0];
     if (h.attempted(prg_idx)) {
-        set_placeholder = h.lastSet(prg_idx)['set'] || 0;
+        set_placeholder = h.lastSet(prg_idx)['set'];
     }
 
-    document.querySelector('#log input').value = set_placeholder[Math.min(currentSet, set_placeholder.length-1)];
+    document.querySelector('#log input').value = set_placeholder[Math.min(currentSet-1, set_placeholder.length-1)];
 }
 
 function changeQuantity(n) {
